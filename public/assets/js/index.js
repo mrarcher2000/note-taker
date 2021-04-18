@@ -1,4 +1,4 @@
-var notes;
+var noteIdCounter = 2;
 
 let noteTitle;
 let noteText;
@@ -59,8 +59,9 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
+    show(saveNoteBtn);
+    // noteTitle.setAttribute('readonly', true);
+    // noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
@@ -102,9 +103,10 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
+  console.log('view note btn');
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-  renderActiveNote();
+  renderActiveNote(activeNote);
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
@@ -189,3 +191,4 @@ if (window.location.pathname === '/notes') {
 
 
 getAndRenderNotes();
+handleRenderSaveBtn();

@@ -14,6 +14,27 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
+app.post('/api/notes', (req, res) => {
+    req.body.id = notes.length.toString();
+
+    if (!req.body.text) {
+        res.status(400).send("There is no text in this note!");
+    } 
+
+    else {
+        var newNote = req.body;
+        notes.push(newNote);
+
+        fs.writeFileSync(
+            path.join(__dirname, './db/db.json'),
+            JSON.stringify({notes}, null, 2)
+        );
+
+        res.json(notes);
+    }
+});
+
+
 app.get('/api/notes', (req, res) => {
     res.json(notes);
 });
@@ -25,6 +46,7 @@ app.get('/', (req, res) => {
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
 });
+
 
 app.listen(PORT, () => {
     console.log(`API Server now active on ${PORT}.`);
